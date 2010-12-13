@@ -1,1 +1,13 @@
+Pushes changes on the 'master' branch up to a SVN trunk after receiving a JSON
+notification from a github repo. Written to get around our dependance on
+Jira Studio.
 
+Requires:
+ * ruby
+ * rubygems + bundler
+ * a rack-enabled webserver
+ * subversion
+ * git
+ * a writeable homedir (sorry, no Heroku)
+ 
+See git2svn.rb for configuration.
