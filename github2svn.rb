@@ -3,11 +3,7 @@
 require 'sinatra'
 require 'json'
 
-GIT_DIR   = File.expand_path(File.join('~', 'git'))
-
-REPOSITORIES = %w{
-  github2svn
-}
+GIT_DIR = File.expand_path(File.join('~', 'git'))
 
 def log message
   puts "#{$$}: " + message
@@ -25,10 +21,9 @@ end
 post '/' do
   push = JSON.parse(params[:payload])
   raise "Bad payload, missing 'repository': #{push.inspect}" unless push['repository']
-  url = push['repository']['name']
+  url = push['repository']['url']
   raise "Bad payload, missing 'repository'->'url': #{push.inspect}" unless url
-  name = url.gsub('http://github.com/', '')
-  raise "Bad payload, don't recognize repository '#{name}'" unless REPOSITORIES.include?(name)
+  repository = url.gsub('http://github.com/', '').gsub('https://github.com/', '')
   
   log "Received push notification for repository #{repository}"
   raise "git checkout for #{repository} doesn't exist in #{git_dir repository}, please create one" unless File.exist?(git_dir(repository))
